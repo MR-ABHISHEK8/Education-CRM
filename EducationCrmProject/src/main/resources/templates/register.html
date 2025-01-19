@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org ">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>SH Register</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+</head>
+
+<body>
+<!-- header start -->
+    <div th:replace="~{fragments/header :: crm-header}"></div>
+<!-- header end -->
+
+
+<!-- main content  start -->
+<main class="container-fluid " style="min-height: 550px;">
+
+
+    <!-- content  -->
+    <section class="container py-4 bg-light">
+        <h3 class="text-center mb-4">Register Here</h3>
+
+
+        <!-- course   -->
+        <div class="row g-4 justify-content-center">
+
+            <!--register card start  -->
+            <div class="col-lg-4 col-md-6">
+                <div class="card shadow p-5 ">
+                    <form action="regForm" method="post" onsubmit="return validateForm()" th:object="${user}" >
+
+                        <div th:if="${successMsg}" class="mb-3 alert alert-success" role="alert" >
+                             <span th:text="${successMsg}"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Name :</label>
+                            <input type="text" class="form-control" id="name" name="name" aria-describedby="emailHelp" th:field="*{name}" required>
+                            <div class="text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"> </div>
+                       </div>
+
+
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email Id :</label>
+                            <input type="email" class="form-control" id="email" name="email" aria-describedby="emailHelp" th:field="*{email}" required>
+                            <div class="text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}" > </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Password</label>
+                            <input type="password" class="form-control" id="password" name="password" th:field="*{password}" required>
+                            <div class="text-danger" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"> </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="phoneno" class="form-label">Phone No :</label>
+                            <input type="text" class="form-control" id="phoneno" name="phoneno" aria-describedby="emailHelp" th:field="*{phoneno}" required>
+                            <div class="text-danger" th:if="${#fields.hasErrors('phoneno')}" th:errors="*{phoneno}"> </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="city" class="form-label">City :</label>
+                            <input type="text" class="form-control" id="city" name="city" aria-describedby="emailHelp" th:field="*{city}" required>
+                            <div class="text-danger" th:if="${#fields.hasErrors('city')}" th:errors="*{city}"> </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Register</button>
+                    </form>
+                </div>
+            </div>
+
+            <!--register card ends -->
+    </section>
+
+</main>
+<!-- main content  start -->
+
+<!-- footer start -->
+      <div th:replace="~{fragments/footer  :: crm-footer}"></div>
+<!-- footer ends -->
+
+    <script type="text/javascript">
+        function validateForm(){
+               var name= document.forms[0]["name"].value;
+                // validation in name
+               var namePattern= /^[a-z,A-Z ]{5,25}$/;
+
+               var email=document.forms[0]["email"].value;
+               var emailPattern=/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+               var password=document.forms[0]["password"].value;
+               var passwordPattern=/^[a-z,A-Z,0-9]{5,25}$/;
+
+               var phoneno=document.forms[0]["phoneno"].value;
+               var phonenoPattern =/^[0-9]{10}$/;
+
+               var city=document.forms[0]["city"].value;
+               var cityPattern =/^[a-z,A-Z]{3,25}$/;
+
+               if (!namePattern.test(name)){      //! agar match nhi hota hai
+                   alert("Name: 5-25 characters, letters & spaces only.");
+                   return false;
+               }
+               else if (!emailPattern.test(email)){
+                   alert("Enter a valid email.");
+                   return false;
+               }
+               else if (!passwordPattern.test(password)){
+                   alert("Password: 5-25 characters, letters & numbers.");
+                   return false;
+               }
+               else if (!phonenoPattern.test(phoneno)){
+                   alert("Phone: 10 digits only.");
+                   return false;
+               }
+               else if (!cityPattern.test(city)){
+                   alert("City: 3-25 letters only.");
+                   return false;
+               }
+               else {
+                   return true;
+               }
+        }
+
+    </script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>
