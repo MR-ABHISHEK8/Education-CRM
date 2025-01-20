@@ -6,8 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -38,5 +40,24 @@ public class AdminController {
        List<Course> courseList= courseService.getAllCourseDetails();
        model.addAttribute("courseList",courseList);
         return "course-management";
+    }
+    @GetMapping("/addCourse")
+    public String openAddCoursePage(Model model){
+        model.addAttribute("course",new Course());
+        return "add-course";
+    }
+    @PostMapping("/addCourseForm")
+    public String addCourseForm(@ModelAttribute("course") Course course,@RequestParam("courseImg") MultipartFile courseImg ,Model model){
+
+        try{
+             courseService.addCourse(course,courseImg);
+             model.addAttribute("successMsg","Course added successfully");
+         }
+
+         catch (Exception e){
+             e.printStackTrace();
+             model.addAttribute("errorMsg","Course not added due to some error");
+         }
+        return "add-course";
     }
 }
