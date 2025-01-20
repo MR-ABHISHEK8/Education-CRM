@@ -15,12 +15,19 @@ public class AdminController {
     @PostMapping("/adminLoginForm")
     public String adminLoginForm(@RequestParam("adminemail") String aemail, @RequestParam("adminpass") String apass , Model model){
         if (aemail.equals("admin@gmail.com") && apass.equals("admin123")){
-            model.addAttribute("errorMsg" , "Invalid email id or password");
             return "admin-profile";
         }
         else {
+            model.addAttribute("errorMsg" , "Oops! Incorrect email or password.");
             return "admin-login";
         }
-
+    }
+    @GetMapping("/adminProfile")
+    public String openAdminProfilePage(){
+        return "admin-profile";
+    }
+    @GetMapping("/courseManagement")
+    public String openCourseManagementPage(){
+        return "course-management";
     }
 }

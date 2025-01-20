@@ -26,9 +26,11 @@
   <div class="card-body text-center">
     <h4 class="card-title py-4 text-decoration-underline">Admin Login</h4>
 
-    <div th:if="${errorMsgMsg}" class="mb-3 alert alert-danger" role="alert" >
-      <span th:text="${errorMsgMsg}"></span>
+    <!-- Error message print -->
+    <div th:if="${errorMsg}" class="mb-3 alert alert-danger" role="alert">
+      <span th:text="${errorMsg}"></span>
     </div>
+
 
     <form action="adminLoginForm" method="Post">
       <div class="mb-3">
