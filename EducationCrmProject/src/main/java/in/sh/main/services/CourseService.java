@@ -37,5 +37,14 @@ public class CourseService {
     public void updateCourseDetails(Course course){
         courseRepository.save(course);
     }
+    public void deleteCourseDetails(String courseName){
+       Course course= courseRepository.findByName(courseName);
+       if (course !=null){
+           courseRepository.delete(course);
+       }
+       else {
+           throw new RuntimeException("Course not Found with name :"+courseName);
+       }
+    }
 
 }

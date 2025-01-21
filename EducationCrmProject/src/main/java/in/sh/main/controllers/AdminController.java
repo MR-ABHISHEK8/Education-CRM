@@ -109,11 +109,20 @@ public class AdminController {
                return "redirect:/courseManagement";
             }
 
-
-
-
-
-
            //---------------Edit course end---------------------------
 
+        //----------------delete course start---------------
+    @GetMapping("/deleteCourseDetails")
+    public String deleteCourseDetails(@RequestParam("courseName") String courseName ,RedirectAttributes redirectAttributes){
+        try {
+
+           courseService.deleteCourseDetails(courseName);
+            redirectAttributes.addFlashAttribute("successMsg","Course deleted successfully");
+        }
+        catch (Exception e){
+            redirectAttributes.addFlashAttribute("errorMsg","Course not deleted  due to some error");
+            e.printStackTrace();
+        }
+        return "redirect:/courseManagement";
+    }
 }
