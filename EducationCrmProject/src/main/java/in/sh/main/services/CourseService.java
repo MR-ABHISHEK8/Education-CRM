@@ -3,8 +3,11 @@ package in.sh.main.services;
 import in.sh.main.entities.Course;
 import in.sh.main.repositories.CourseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -19,6 +22,13 @@ public class CourseService {
     private CourseRepository courseRepository;
     public List<Course> getAllCourseDetails(){
         return courseRepository.findAll();
+    }
+
+//    -------------pagination---------------------------
+    //Pageable is used to specify pagination i.e page number ,page number,page size,sorting order etc when querying with database
+    //Page represent the chunk of data that is fetched according to pagination parameters defined by Pagable.
+    public Page<Course> getAllCourseDetailsByPagination(Pageable pageable){
+        return courseRepository.findAll(pageable);
     }
 
     public void addCourse(Course course, MultipartFile courseImg) throws IOException {

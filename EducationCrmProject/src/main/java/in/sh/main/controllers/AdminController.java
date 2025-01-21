@@ -3,6 +3,9 @@ package in.sh.main.controllers;
 import in.sh.main.entities.Course;
 import in.sh.main.services.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -43,10 +46,17 @@ public class AdminController {
     public String openAdminProfilePage(){
         return "admin-profile";
     }
+
     @GetMapping("/courseManagement")
-    public String openCourseManagementPage( Model model){
-       List<Course> courseList= courseService.getAllCourseDetails();
-       model.addAttribute("courseList",courseList);
+    public String openCourseManagementPage( Model model,
+                @RequestParam(name = "page" ,defaultValue ="0") int page,
+                @RequestParam(name = "size" ,defaultValue ="4") int size)
+    {
+       Pageable pageable= PageRequest.of(page,size);
+
+       Page<Course> coursesPage= courseService.getAllCourseDetailsByPagination(pageable);
+
+       model.addAttribute("coursesPage",coursesPage);
         return "course-management";
     }
     @GetMapping("/addCourse")
@@ -80,6 +90,7 @@ public class AdminController {
                   model.addAttribute("newCourseObj" ,new Course());
                 return "edit-course";
            }
+
             @PostMapping("/updateCourseDetailsForm")
              public String updateCourseDetailsForm(@ModelAttribute("newCourseObj") Course newCourseObj , @RequestParam("courseImg") MultipartFile courseImg , RedirectAttributes redirectAttributes){
              try {
@@ -125,4 +136,5 @@ public class AdminController {
         }
         return "redirect:/courseManagement";
     }
+    //-------------------delete course end----------------------
 }

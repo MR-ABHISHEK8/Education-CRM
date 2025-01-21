@@ -53,7 +53,7 @@
       </tr>
       </thead>
       <tbody>
-      <tr th:each="course :${courseList}">
+      <tr th:each="course :${coursesPage.content}">
         <td th:text="${course.name}"></td>
         <td th:text="${course.discountedPrice}"></td>
         <td> <img th:src="@{${course.imageUrl}}" width="150" alt="Course Image"></td>
@@ -72,6 +72,26 @@
 
       </tbody>
     </table>
+<!--------------------pagination----------------------->
+
+    <nav aria-label="Page navigation example">
+      <ul class="pagination">
+        <li class="page-item" th:classappend="${coursesPage.hasPrevious()} ? '' : 'disabled'">
+          <a class="page-link" th:href="@{/courseManagement(page=${coursesPage.number-1} ,size=${coursesPage.size})}">
+            <span aria-hidden="true">&laquo;</span>
+          </a>
+        </li>
+        <li class="page-item" th:each="i : ${#numbers.sequence(0,coursesPage.totalPages-1)}" th:classappend="${coursesPage.number==i}? 'active': ''">
+          <a class="page-link" th:href="@{/courseManagement(page=${i},size=${coursesPage.size})}" th:text="${i+1}"></a>
+        </li>
+
+        <li class="page-item" th:classappend="${coursesPage.hasNext()} ? '' :'disabled'">
+          <a class="page-link" th:href="@{/courseManagement(page=${coursesPage.number+1} ,size=${coursesPage.size})}">
+            <span aria-hidden="true">&raquo;</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
   </section>
 
 </div>
