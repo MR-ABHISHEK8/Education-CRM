@@ -27,9 +27,15 @@ public class CourseService {
         Files.write(imgPath,courseImg.getBytes());   // Write the image file to the disk
 
         String imgUrl=IMAGE_URL+imgName;         //stored in the database
-
         course.setImageUrl(imgUrl);
 
         courseRepository.save(course);
     }
+    public Course getCourseDetails(String courseName){
+        return courseRepository.findByName(courseName);
+    }
+    public void updateCourseDetails(Course course){
+        courseRepository.save(course);
+    }
+
 }
