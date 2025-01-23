@@ -26,9 +26,9 @@
     <h3 class="text-center"> Edit Employee </h3>
 
     <div class="row justify-content-center">
-      <div class="card shadow p-5" style="width: 50%">
+      <div class="card shadow p-5" style="width: 45%">
 
-        <form action="#"  method="post" enctype="multipart/form-data">
+        <form th:action="@{/updateEmployeeDetailsForm}" th:object="${newEmployeeObj}" method="post" enctype="multipart/form-data">
           <div class="mb-3">
             <label class="form-label">Name : </label>
             <input type="text" name="name" th:value="${employee.name}" class="form-control" required />
