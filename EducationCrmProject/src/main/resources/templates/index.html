@@ -63,8 +63,17 @@
                         </div>
 
                         <div th:unless="${sessionUser == null OR sessionUser == ''}">
-                            <button class="btn btn-primary">Buy</button>
+                            <button class="btn btn-primary"
+                                    th:data-cname="${course.name}"
+                                    th:data-camount="${course.discountedPrice}"
+                                    th:data-uname="${sessionUser.name}"
+                                    th:data-uemail="${sessionUser.email}"
+                                    th:data-uphoneno="${sessionUser.phoneno}"
+                                    onclick="purchaseCourse(this.getAttribute('data-cname'), this.getAttribute('data-camount'), this.getAttribute('data-uname'), this.getAttribute('data-uemail'), this.getAttribute('data-uphoneno'))">
+                                Buy
+                            </button>
                         </div>
+
 
                     </div>
                     <div class="card-footer text-muted">
@@ -89,6 +98,99 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+<!---------------------------- payment getways part-------------------------------------- -->
+
+
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+
+    // <!-- start    this is check the payments function work or not------------------->
+
+    // function purchaseCourse(courseName,courseAmount,uname,uemail,uphoneno){
+    //     // Debugging: Values print
+    //     console.log("User Name: ", uname);
+    //     console.log("User Email: ", uemail);
+    //     console.log("User Phone: ", uphoneno);
+    //
+    //     // Alert for debugging
+    //     alert("Name: " + uname + ", Email: " + uemail + ", Phone: " + uphoneno);
+    //
+    //     // Validation: Check in  name, email, aur phone number available ..
+    //     if (!uname || !uemail || !uphoneno) {
+    //         alert("Please provide all details: Name, Email, and Phone Number.");
+    //         return uemail; // any value missing ho, then  function return
+    //
+    //     }
+    // <!-- end   this is check the payments function work or not------------------->
+
+    function purchaseCourse(courseName,courseAmount,uname,uemail,uphoneno){
+
+        var options = {
+            "key": "rzp_test_9BLhKcsgvQhrXm",
+            "amount": courseAmount * 100,
+            "currency": "INR",
+            "name": uname,
+            "description": "Course Transaction",
+            // "image": "https://ailogomaker.io/prompt/5743-LOGO-Design-for-Mithila-Brothers-Makhana-Artistic-Fusion-of-Typography-and-Traditional-Mithila-Painting",
+            "handler": function (response){
+                console.log(response);
+                alert("Payment Successfully");
+
+                var requestData={
+                                     courseName:courseName,
+                                     userEmail:uemail,
+                                     dateOfPurchase:new Date().toLocaleString(),
+                                     rzpPaymentId:response.razorpay_payment_id
+
+                                 };
+
+                $.ajax({
+                    type: "POST",
+                    url:"/api/storeOrderDetails",
+                    contentType:"application/json",
+                    data:JSON.stringify(requestData),
+                    success:function (response){
+                        console.log("data stored successfully" ,response);
+                        alert("\u{1F389} Hooray! Course purchased successfully! Thank you!");
+                        window.location.href='/myCourses';
+                    },
+                    error:function (error){
+                        console.log("Error :"+error);
+                        alert(" Oops! Something went wrong. Please try again!" + error);
+                    }
+
+                });
+
+            },
+            "prefill": {
+                "name": uname,
+                "email": uemail,
+                "contact": uphoneno
+            },
+            "notes": {
+                "courseName": courseName
+            },
+            "theme": {
+                "color": "#3399cc"
+            }
+        };
+
+
+        var rzp1 = new Razorpay(options);
+
+        rzp1.on('payment.failed', function (response){
+            console.log(response);
+            alert("Error :" +response);
+        });
+
+        rzp1.open();
+
+    }
+
+</script>
 </body>
 
 </html>

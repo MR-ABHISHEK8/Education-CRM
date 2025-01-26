@@ -1,4 +1,4 @@
-package in.sh.main.controllers;
+package in.sh.main.entities;
 
 import jakarta.persistence.*;
 

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -119,8 +120,14 @@ public class AdminController {
 
                return "redirect:/courseManagement";
             }
+    //-------------admin logout------------------------
+              @GetMapping("/adminLogout")
+              public String adminLogout(SessionStatus sessionStatus){
+                 sessionStatus.setComplete();
+                 return "admin-login";
+              }
 
-           //---------------Edit course end---------------------------
+
 
         //----------------delete course start---------------
     @GetMapping("/deleteCourseDetails")
@@ -137,4 +144,7 @@ public class AdminController {
         return "redirect:/courseManagement";
     }
     //-------------------delete course end----------------------
+
+
+
 }
