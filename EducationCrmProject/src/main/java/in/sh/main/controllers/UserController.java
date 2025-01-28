@@ -1,7 +1,9 @@
 package in.sh.main.controllers;
 
+import in.sh.main.dto.PurchasedCourse;
 import in.sh.main.entities.Course;
 import in.sh.main.entities.User;
+import in.sh.main.repositories.OrdersRepository;
 import in.sh.main.repositories.UserRepository;
 import in.sh.main.services.CourseService;
 import in.sh.main.services.UserService;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -107,8 +110,33 @@ public class UserController {
         return "user-profile";
     }
 
+    @Autowired
+    private OrdersRepository ordersRepository;
     @GetMapping("/myCourses")
-    public String myCoursesPage() {
+    public String myCoursesPage(@ModelAttribute("sessionUser") User sessionUser ,Model model ) {
+      List<Object[]> pcDbList=  ordersRepository.findPurchasedCoursesByEmail(sessionUser.getEmail());
+
+      List<PurchasedCourse> purchasedCoursesList=new ArrayList<>();
+
+      for (Object[] course : pcDbList){
+
+//          System.out.println(course[0]);
+//          System.out.println(course[1]);
+//          System.out.println(course[2]);
+//          System.out.println(course[3]);
+//          System.out.println(course[4]);
+
+            PurchasedCourse purchasedCourse=new PurchasedCourse();
+            purchasedCourse.setPurchasedOn((String) course[0]);
+            purchasedCourse.setDescription((String) course[1]);
+            purchasedCourse.setImageUrl((String) course[2]);
+            purchasedCourse.setCourseName((String) course[3]);
+            purchasedCourse.setUpdatedOn((String) course[4]);
+
+            purchasedCoursesList.add(purchasedCourse);
+      }
+        model.addAttribute("purchasedCoursesList" ,purchasedCoursesList);
+
         return "my-courses";
     }
 }

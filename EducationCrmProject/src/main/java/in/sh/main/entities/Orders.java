@@ -11,11 +11,15 @@ public class Orders {
     @Column
     private String courseName;
     @Column
+    private String courseAmount;
+    @Column
     private String userEmail;
     @Column
     private String dateOfPurchase;
     @Column
     private String rzpPaymentId;
+    @Column
+    private String orderId;
 
     public Long getId() {
         return id;
@@ -53,7 +57,24 @@ public class Orders {
         return rzpPaymentId;
     }
 
+    public String getCourseAmount() {
+        return courseAmount;
+    }
+
+    public void setCourseAmount(String courseAmount) {
+        this.courseAmount = courseAmount;
+    }
+
+    public String getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(String orderId) {
+        this.orderId = orderId;
+    }
+
     public void setRzpPaymentId(String rzpPaymentId) {
         this.rzpPaymentId = rzpPaymentId;
     }
+
 }
